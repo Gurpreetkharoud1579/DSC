@@ -1,5 +1,8 @@
-const express = require('express');
-
 module.exports.home = (req, res) => {
-    return res.send('<h1>Home for Daily Sharing and Connect </h1>');
+    // get and set cookies
+    // console.log(req.cookies);
+    // res.cookie('user_id', 25);
+    return res.render('home', {
+        title: 'Home',
+    });
 }

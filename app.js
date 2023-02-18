@@ -1,19 +1,30 @@
 // get the express library and others that are required
 const express = require('express');
 const bodyParser = require('body-parser');
+const cookieParser = require('cookie-parser');
 const path = require('path');
-
-// port for the app
+const expressLayouts = require('express-ejs-layouts');
 const port = 2700;
+const db = require('./config/mongoose');
+
+
 
 const app = express();
 
-// user routes defined in /routes/index.js
-app.use('/', require('./routes/index.js'))
+app.use(cookieParser());
+// using express-ejs-layouts
+app.use(expressLayouts);
+// extract style and scripts from sub pages into layouts 
+app.set('layout extractStyles', true);
+app.set('layout extractScripts', true);
 
 // middleware bodyparser to decode the request body
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+// user routes defined in /routes/index.js
+app.use('/', require('./routes/index.js'))
+
+
 
 //middleware for using public directory as default 
 app.use(express.static(__dirname + '/public'));
