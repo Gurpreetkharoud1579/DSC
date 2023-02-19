@@ -6,15 +6,19 @@ module.exports.home = (req, res) => {
     // res.cookie('user_id', 25);
 
     // populate the user of each post
-    Post.find({}).populate('user').exec((err, posts) => {
-        if (err) {
-            console.log('Error finding the posts', err);
-            return res.redirect('back');
-        }
-
-        return res.render('home', {
-            title: "DSC | Home",
-            posts: posts
-        });
-    })
+    Post.find({})
+        .populate('user')
+        .populate({
+            path: 'comments',
+            populate: {
+                path: 'user'
+            }
+        })
+        .exec(function(err, posts) {
+            if (err) { console.log("error finding posts", err); }
+            return res.render('home', {
+                title: "DSC | Home",
+                posts: posts
+            });
+        })
 }
