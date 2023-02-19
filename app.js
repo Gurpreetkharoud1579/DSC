@@ -2,8 +2,15 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
+
+// used for session cookie
+const session = require('express-session');
+const passport = require('passport');
+const passportLocal = require('./config/passportLocalStrategy');
 const path = require('path');
 const expressLayouts = require('express-ejs-layouts');
+const MongoStore = require('connect-mongo');
+
 const port = 2700;
 const db = require('./config/mongoose');
 
@@ -21,6 +28,29 @@ app.set('layout extractScripts', true);
 // middleware bodyparser to decode the request body
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+
+// mongo coonect will store the session in db
+app.use(session({
+    name: 'dsc',
+    // TODO change the secret before deployment in production mode
+    secret: 'blahsomething',
+    saveUninitialized: false,
+    resave: false,
+    cookie: {
+        maxAge: (1000 * 60 * 100)
+    },
+    store: MongoStore.create({
+        mongoUrl: 'mongodb://127.0.0.1:27017/DSC',
+        autoRemove: 'disable'
+    }, (errr) => console.log(err || 'connect-mongo db setup done '))
+}));
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+// send user value to res before it goes to any route controller
+app.use(passport.setAuthenticatedUser);
+
 // user routes defined in /routes/index.js
 app.use('/', require('./routes/index.js'))
 

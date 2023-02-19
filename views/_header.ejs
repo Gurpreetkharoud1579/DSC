@@ -1,3 +1,36 @@
-<header class="width-100 text-center bg-theme color-white">
-    <h5>Header</h5>
+<header>
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+        <div class="container-fluid bd-highlight">
+            <a class="navbar-brand" href="/">DSC</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse flex-grow-0 bd-highlight" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item ">
+                        <a class="nav-link active" aria-current="page" href="/">Home</a>
+                    </li>
+                    <%  if( locals.user ) { %>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/users/profile">
+                                <%= user.name %>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/users/sign-out">Sign Out</a>
+                        </li>
+                        <% } else { %>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/users/sign-in">Sign In</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="/users/sign-up">Sign Up</a>
+                            </li>
+                            <% } %>
+
+
+                </ul>
+            </div>
+        </div>
+    </nav>
 </header>
